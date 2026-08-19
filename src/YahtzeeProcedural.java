@@ -1,18 +1,34 @@
+import java.util.Scanner;
+
 public class YahtzeeProcedural {
 
-    public static void main(String[] args) {
-        System.out.println( "Bon courage !");
+    static final int MIN = 1;
+    static final int MAX = 6;
 
-        const int MIN = 1;
-        const int MAX = 6;
-        int nombre;
+    static int[] des = new int[5];
 
-        int tirerAleatoirement(nombre) {
-            int resultat = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
-            return resultat;
+    static int tirerDesAleatoirement() {
+        return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
+    }
+
+    static void tirerDes() {
+
+        for (int i = 0; i < des.length; i++) {
+            des[i] = tirerDesAleatoirement();
         }
 
-        System.out.println(tirerAleatoirement(nombre)
+    }
 
+    static void affichageDes() {
+
+        for (int i = 0; i < des.length; i++) {
+            System.out.println("De " + (i + 1) + " vaut " + des[i]);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        tirerDes();
+        affichageDes();
     }
 }
