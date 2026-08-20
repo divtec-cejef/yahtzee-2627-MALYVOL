@@ -26,46 +26,54 @@ public class YahtzeeProcedural {
         }
     }
 
-    static void reLance() {
-        Scanner scanner = new Scanner(System.in);
-        String choix;
+    static void reLance(int[] positions) {
 
-        for (int i= 0; i < 2; i++){
-        System.out.println("\nQuels des voulez-vous relancer ? (0 pour arreter)");
-        choix = scanner.nextLine();
-
-        if (choix.equals("0") || choix.isEmpty()) {
-            affichageDes();
-            break;
-        } else {
-            for (int j = 0; j < choix.split(" ").length; j++) {
-                des[(Integer.parseInt(choix.split(" ")[j]) - 1)] = tirerDesAleatoirement();
+            for (int j = 0; j < positions.length; j++) {
+                des[positions[j]] = tirerDesAleatoirement();
             }
             affichageDes();
         }
 
-        }
 
-
-    }
-
-    static String demandeReLance() {
+    static int[] demanderDesARelancer() {
+        int[] positions;
+        boolean valide = true;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nQuels des voulez-vous relancer ? (0 pour arreter)");
-        String choix = scanner.nextLine();
+        do {
+            valide = true;
+            System.out.println("\nQuels des voulez-vous relancer ? (0 pour arreter)");
+            String choix = scanner.nextLine();
 
-        if (choix.isEmpty() || choix.equals("0")) {
+            if (choix.equals("0") || choix.isEmpty()) {
+                return new int[0];
+            }
 
-        }
+            String[] morceaux = choix.split(" ");
+            positions = new int[morceaux.length];
 
-        return choix;
+            for (int j = 0; j < morceaux.length; j++) {
+                positions[j] = Integer.parseInt(morceaux[j]) - 1;
+                if (positions[j] < 0 || positions[j] > 4) {
+                    System.out.println("Error, saisie " + morceaux[j] + " est invalide.");
+                    valide = false;
+                }
+            }
+
+        } while (!valide) ;
+
+        return positions;
     }
+
+
+
 
 
 
     public static void main(String[] args) {
         tirerDes();
         affichageDes();
-        reLance();
+        for (int i = 0; i < 2; i++) {
+            reLance(demanderDesARelancer());
+        }
     }
 }
