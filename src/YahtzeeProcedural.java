@@ -31,11 +31,11 @@ public class YahtzeeProcedural {
 
     static void reLance(int[] positions) {
 
-            for (int j = 0; j < positions.length; j++) {
-                des[positions[j]] = tirerDesAleatoirement();
-            }
-            affichageDes();
+        for (int j = 0; j < positions.length; j++) {
+            des[positions[j]] = tirerDesAleatoirement();
         }
+        affichageDes();
+    }
 
 
     static int[] demanderDesARelancer() {
@@ -62,7 +62,7 @@ public class YahtzeeProcedural {
                 }
             }
 
-        } while (!valide) ;
+        } while (!valide);
 
         return positions;
     }
@@ -72,7 +72,12 @@ public class YahtzeeProcedural {
         tirerDes();
         affichageDes();
         for (int i = 0; i < 2; i++) {
-            reLance(demanderDesARelancer());
+            int[] positions = demanderDesARelancer();
+            if (positions.length == 0) {
+                break;
+            } else {
+                reLance(positions);
+            }
         }
     }
 }
