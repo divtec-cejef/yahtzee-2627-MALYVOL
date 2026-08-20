@@ -11,6 +11,7 @@ public class YahtzeeProcedural {
         return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
     }
 
+
     static void tirerDes() {
 
         for (int i = 0; i < des.length; i++) {
@@ -19,12 +20,14 @@ public class YahtzeeProcedural {
 
     }
 
+
     static void affichageDes() {
 
         for (int i = 0; i < des.length; i++) {
             System.out.println("De " + (i + 1) + " vaut " + des[i]);
         }
     }
+
 
     static void reLance(int[] positions) {
 
@@ -63,10 +66,6 @@ public class YahtzeeProcedural {
 
         return positions;
     }
-
-
-
-
 
 
     public static void main(String[] args) {
