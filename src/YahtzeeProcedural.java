@@ -1,5 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
@@ -80,14 +78,6 @@ public class YahtzeeProcedural {
         return positions;
     }
 
-    static void compterOccurrences() {
-
-        for (int i = 0; i < des.length; i++) {
-            occurrences[des[i] - 1]++;
-        }
-
-    }
-
 
     static void affichageOccurences() {
 
@@ -98,6 +88,10 @@ public class YahtzeeProcedural {
 
 
     static void detecterCombinaison() {
+        for (int i = 0; i < des.length; i++) {
+            occurrences[des[i] - 1]++;
+        }
+
         for (int i = 0; i < occurrences.length; i++) {
             if (occurrences[i] == 2) {
                 nombrePaires++; // Un paire
@@ -128,7 +122,7 @@ public class YahtzeeProcedural {
         }
     }
 
-    static int calculerScore() {
+    static void calculerScore() {
         if (nombrePaires == 1 && unBrelan) {
             score += 25;
         } else if (maxSuite == 5) {
@@ -146,7 +140,6 @@ public class YahtzeeProcedural {
         } else if (unBrelan) {
             score += valeurBrelan * 3;
         }
-        return score;
     }
 
 
@@ -161,7 +154,6 @@ public class YahtzeeProcedural {
                 reLance(positions);
             }
         }
-        compterOccurrences();
         detecterCombinaison();
         calculerScore();
         System.out.println("Votre score est : " + score);
