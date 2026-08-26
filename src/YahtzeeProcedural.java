@@ -6,6 +6,7 @@ public class YahtzeeProcedural {
     static final int MAX = 6;
 
     static int[] des = new int[5];
+    static int[] occurrences = new int[6];
 
     static int tirerDesAleatoirement() {
         return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
@@ -67,10 +68,28 @@ public class YahtzeeProcedural {
         return positions;
     }
 
+    static void compterOccurrences() {
+
+        for (int i = 0; i < des.length; i++) {
+            occurrences[ des[i] - 1 ] ++;
+            }
+
+    }
+
+
+    static void affichageOccurences() {
+
+        for (int i = 0; i < occurrences.length; i++) {
+            System.out.println("[Numero " + (i+1) + "] : " + occurrences[i]);
+        }
+    }
+
 
     public static void main(String[] args) {
         tirerDes();
         affichageDes();
+        compterOccurrences();
+        affichageOccurences();
         for (int i = 0; i < 2; i++) {
             int[] positions = demanderDesARelancer();
             if (positions.length == 0) {
