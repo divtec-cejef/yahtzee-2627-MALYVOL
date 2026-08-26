@@ -1,5 +1,6 @@
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.Scanner;
-import java.util.concurrent.StructureViolationException;
 
 public class YahtzeeProcedural {
 
@@ -8,6 +9,16 @@ public class YahtzeeProcedural {
 
     static int[] des = new int[5];
     static int[] occurrences = new int[6];
+
+    static int nombrePaires = 0;
+    static int score = 0;
+    static int valeurBrelan = 0;
+    static int valeurCarre = 0;
+    static int suite = 0;
+    static int maxSuite = 0;
+    static boolean unBrelan = false;
+    static boolean unCarre = false;
+    static boolean unYanthzee = false;
 
     static int tirerDesAleatoirement() {
         return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
@@ -72,8 +83,8 @@ public class YahtzeeProcedural {
     static void compterOccurrences() {
 
         for (int i = 0; i < des.length; i++) {
-            occurrences[ des[i] - 1 ] ++;
-            }
+            occurrences[des[i] - 1]++;
+        }
 
     }
 
@@ -81,42 +92,67 @@ public class YahtzeeProcedural {
     static void affichageOccurences() {
 
         for (int i = 0; i < occurrences.length; i++) {
-            System.out.println("[Numero " + (i+1) + "] : " + occurrences[i]);
+            System.out.println("[Numero " + (i + 1) + "] : " + occurrences[i]);
         }
     }
 
 
     static void detecterCombinaison() {
-        int nombrePaires = 0;
-        boolean unBrelan = false;
-        boolean unCarre = false;
-        boolean unYanthzee = false;
         for (int i = 0; i < occurrences.length; i++) {
             if (occurrences[i] == 2) {
                 nombrePaires++; // Un paire
             } else if (occurrences[i] == 3) {
                 unBrelan = true; // Un brelan
+                valeurBrelan = i + 1;
             } else if (occurrences[i] == 4) {
                 unCarre = true; // Un carré
+                valeurCarre = i + 1;
             } else if (occurrences[i] == 5) {
                 unYanthzee = true; // Yanthzee
             }
         }
-        if (nombrePaires == 2) {
-            // Deux paires
-        }
 
-        if (nombrePaires == 1 && unBrelan) {
-        // Full house
+        for (int i = 0; i < occurrences.length; i++) {
+
+            if (occurrences[i] > 0) {
+
+                suite++;
+
+                if (suite > maxSuite) {
+                    maxSuite = suite;
+                }
+
+            } else {
+                suite = 0;
+            }
         }
+    }
+
+    static int calculerScore() {
+        if (nombrePaires == 1 && unBrelan) {
+            score += 25;
+        } else if (maxSuite == 5) {
+            score += 40;
+        } else if (maxSuite == 4) {
+            score += 30;
+        } else if (nombrePaires == 2) {
+            score += 10;
+        } else if (nombrePaires == 1) {
+            score += 5;
+        } else if (unYanthzee) {
+            score += 50;
+        } else if (unCarre) {
+            score += valeurCarre * 4;
+        } else if (unBrelan) {
+            score += valeurBrelan * 3;
+        }
+        return score;
     }
 
 
     public static void main(String[] args) {
         tirerDes();
         affichageDes();
-        compterOccurrences();
-        affichageOccurences();
         for (int i = 0; i < 2; i++) {
             int[] positions = demanderDesARelancer();
             if (positions.length == 0) {
@@ -125,5 +161,9 @@ public class YahtzeeProcedural {
                 reLance(positions);
             }
         }
+        compterOccurrences();
+        detecterCombinaison();
+        calculerScore();
+        System.out.println("Votre score est : " + score);
     }
 }
