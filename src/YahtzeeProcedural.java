@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.StructureViolationException;
 
 public class YahtzeeProcedural {
 
@@ -81,6 +82,32 @@ public class YahtzeeProcedural {
 
         for (int i = 0; i < occurrences.length; i++) {
             System.out.println("[Numero " + (i+1) + "] : " + occurrences[i]);
+        }
+    }
+
+
+    static void detecterCombinaison() {
+        int nombrePaires = 0;
+        boolean unBrelan = false;
+        boolean unCarre = false;
+        boolean unYanthzee = false;
+        for (int i = 0; i < occurrences.length; i++) {
+            if (occurrences[i] == 2) {
+                nombrePaires++; // Un paire
+            } else if (occurrences[i] == 3) {
+                unBrelan = true; // Un brelan
+            } else if (occurrences[i] == 4) {
+                unCarre = true; // Un carré
+            } else if (occurrences[i] == 5) {
+                unYanthzee = true; // Yanthzee
+            }
+        }
+        if (nombrePaires == 2) {
+            // Deux paires
+        }
+
+        if (nombrePaires == 1 && unBrelan) {
+        // Full house
         }
     }
 
