@@ -5,6 +5,13 @@ public class YahtzeeProcedural {
     static final int MIN = 1;
     static final int MAX = 6;
 
+    static final int PAIRE = 5;
+    static final int DEUX_PAIRE = 10;
+    static final int FULL_HOUSE = 25;
+    static final int PETITE_SUITE = 30;
+    static final int GRANDE_SUITE = 40;
+    static final int YATHZEE = 50;
+
     static int[] des = new int[5];
     static int[] occurrences = new int[6];
 
@@ -79,14 +86,6 @@ public class YahtzeeProcedural {
     }
 
 
-    static void affichageOccurences() {
-
-        for (int i = 0; i < occurrences.length; i++) {
-            System.out.println("[Numero " + (i + 1) + "] : " + occurrences[i]);
-        }
-    }
-
-
     static void detecterCombinaison() {
         for (int i = 0; i < des.length; i++) {
             occurrences[des[i] - 1]++;
@@ -124,17 +123,17 @@ public class YahtzeeProcedural {
 
     static void calculerScore() {
         if (nombrePaires == 1 && unBrelan) {
-            score += 25;
+            score += FULL_HOUSE;
         } else if (maxSuite == 5) {
-            score += 40;
+            score += GRANDE_SUITE;
         } else if (maxSuite == 4) {
-            score += 30;
+            score += PETITE_SUITE;
         } else if (nombrePaires == 2) {
-            score += 10;
+            score += DEUX_PAIRE;
         } else if (nombrePaires == 1) {
-            score += 5;
+            score += PAIRE;
         } else if (unYanthzee) {
-            score += 50;
+            score += YATHZEE;
         } else if (unCarre) {
             score += valeurCarre * 4;
         } else if (unBrelan) {
@@ -142,6 +141,58 @@ public class YahtzeeProcedural {
         }
     }
 
+    static int estUnPaire() {
+        int paire = 0;
+        for (int i = 0; i < des.length; i++) {
+            occurrences[des[i] - 1]++;
+        }
+        for (int i = 0; i < occurrences.length; i++) {
+            if (occurrences[i] == 2) {
+                return true; // Un paire
+                paire++;
+            } else {
+                return false;
+            }
+        }
+        return paire;
+    }
+
+    static boolean estUnDoublePaire() {
+
+    }
+
+    static boolean estUnBrelan() {
+            for (int i = 0; i < des.length; i++) {
+                occurrences[des[i] - 1]++;
+            }
+            for (int i = 0; i < occurrences.length; i++) {
+                if (occurrences[i] == 3) {
+                    return true; // Un Brelan
+                } else {
+                    return false;
+                }
+        }
+
+
+    static boolean estUnCarre() {
+
+    }
+
+    static boolean estUnFullHouse() {
+
+    }
+
+    static boolean estUnePetiteSuite() {
+
+    }
+
+    static boolean estUneGrandeSuite() {
+
+    }
+
+    static boolean estUnYathzee() {
+
+    }
 
     public static void main(String[] args) {
         tirerDes();
