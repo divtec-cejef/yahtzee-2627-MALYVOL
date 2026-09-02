@@ -15,15 +15,9 @@ public class YahtzeeProcedural {
     static int[] des = new int[5];
     static int[] occurrences = new int[6];
 
-    static int nombrePaires = 0;
     static int score = 0;
     static int valeurBrelan = 0;
     static int valeurCarre = 0;
-    static int suite = 0;
-    static int maxSuite = 0;
-    static boolean unBrelan = false;
-    static boolean unCarre = false;
-    static boolean unYanthzee = false;
 
     static int tirerDesAleatoirement() {
         return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
@@ -49,8 +43,8 @@ public class YahtzeeProcedural {
 
     static void reLance(int[] positions) {
 
-        for (int j = 0; j < positions.length; j++) {
-            des[positions[j]] = tirerDesAleatoirement();
+        for (int position : positions) {
+            des[position] = tirerDesAleatoirement();
         }
         affichageDes();
     }
@@ -86,28 +80,69 @@ public class YahtzeeProcedural {
     }
 
 
-    static void detecterCombinaison() {
-        for (int i = 0; i < des.length; i++) {
-            occurrences[des[i] - 1]++;
+    static void compterOccurrences() {
+        for (int i = 0; i < occurrences.length; i++) {
+            occurrences[i] = 0;
         }
 
-        for (int i = 0; i < occurrences.length; i++) {
-            if (occurrences[i] == 2) {
-                nombrePaires++; // Un paire
-            } else if (occurrences[i] == 3) {
-                unBrelan = true; // Un brelan
-                valeurBrelan = i + 1;
-            } else if (occurrences[i] == 4) {
-                unCarre = true; // Un carré
-                valeurCarre = i + 1;
-            } else if (occurrences[i] == 5) {
-                unYanthzee = true; // Yanthzee
+        for (int de : des) {
+            occurrences[de - 1]++;
+        }
+    }
+
+
+    static boolean estUnPaire() {
+        for (int occurrence : occurrences) {
+            if (occurrence == 2) {
+                return true;
             }
         }
+        return false;
+    }
 
+
+    static boolean estUnDoublePaire() {
+        int paire = 0;
+        for (int occurrence : occurrences) {
+            if (occurrence == 2) {
+                paire++;
+            }
+            if (paire == 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    static boolean estUnBrelan() {
         for (int i = 0; i < occurrences.length; i++) {
+            if (occurrences[i] == 3) {
+                valeurBrelan = i + 1;
+                return true;
+            }
+        }
+        return false;
+    }
 
-            if (occurrences[i] > 0) {
+
+    static boolean estUnCarre() {
+        for (int i = 0; i < occurrences.length; i++) {
+            if (occurrences[i] == 4) {
+                valeurCarre = i + 1;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    static boolean estUnePetitSuite() {
+        int suite = 0;
+        int maxSuite = 0;
+        for (int occurrence : occurrences) {
+
+            if (occurrence > 0) {
 
                 suite++;
 
@@ -119,84 +154,132 @@ public class YahtzeeProcedural {
                 suite = 0;
             }
         }
+
+        return maxSuite == 4;
     }
 
+
+    static boolean estUneGrandeSuite() {
+        int suite = 0;
+        int maxSuite = 0;
+        for (int occurrence : occurrences) {
+
+            if (occurrence > 0) {
+
+                suite++;
+
+                if (suite > maxSuite) {
+                    maxSuite = suite;
+                }
+
+            } else {
+                suite = 0;
+            }
+        }
+
+        return maxSuite == 5;
+    }
+
+    static boolean estUnFullHouse() {
+        return estUnPaire() && estUnBrelan();
+    }
+
+    static boolean estUnYathzee() {
+        boolean estYahtzee = false;
+        for (int occurrence : occurrences) {
+            if (occurrence == 5) {
+                estYahtzee = true; // Un Brelan
+                break;
+            }
+        }
+            return estYahtzee;
+        }
+
     static void calculerScore() {
-        if (nombrePaires == 1 && unBrelan) {
+        compterOccurrences();
+        if (estUnFullHouse()) {
             score += FULL_HOUSE;
-        } else if (maxSuite == 5) {
+        } else if (estUneGrandeSuite()) {
             score += GRANDE_SUITE;
-        } else if (maxSuite == 4) {
+        } else if (estUnePetitSuite()) {
             score += PETITE_SUITE;
-        } else if (nombrePaires == 2) {
+        } else if (estUnDoublePaire()) {
             score += DEUX_PAIRE;
-        } else if (nombrePaires == 1) {
+        } else if (estUnPaire()) {
             score += PAIRE;
-        } else if (unYanthzee) {
+        } else if (estUnYathzee()) {
             score += YATHZEE;
-        } else if (unCarre) {
+        } else if (estUnCarre()) {
             score += valeurCarre * 4;
-        } else if (unBrelan) {
+        } else if (estUnBrelan()) {
             score += valeurBrelan * 3;
         }
     }
 
-    static int estUnPaire() {
-        int paire = 0;
-        for (int i = 0; i < des.length; i++) {
-            occurrences[des[i] - 1]++;
-        }
-        for (int i = 0; i < occurrences.length; i++) {
-            if (occurrences[i] == 2) {
-                return true; // Un paire
-                paire++;
-            } else {
-                return false;
-            }
-        }
-        return paire;
-    }
+    static void affichageScore() {
+        calculerScore();
 
-    static boolean estUnDoublePaire() {
-
-    }
-
-    static boolean estUnBrelan() {
-            for (int i = 0; i < des.length; i++) {
-                occurrences[des[i] - 1]++;
-            }
-            for (int i = 0; i < occurrences.length; i++) {
-                if (occurrences[i] == 3) {
-                    return true; // Un Brelan
-                } else {
-                    return false;
-                }
+        System.out.print("\n1) Une Paire : ") ;
+        if (score == PAIRE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
         }
 
+        System.out.print("2) Deux Paire : ");
+        if (score == DEUX_PAIRE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    static boolean estUnCarre() {
+        System.out.print("3) Brelan : ");
+        if (score == (valeurBrelan * 3)) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    }
+        System.out.print("4) Carré : ");
+        if (score == (valeurCarre * 4)) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    static boolean estUnFullHouse() {
+        System.out.print("5) Full House : ");
+        if (score == FULL_HOUSE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    }
+        System.out.print("6) Petite suite : ");
+        if (score == PETITE_SUITE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    static boolean estUnePetiteSuite() {
+        System.out.print("7) Grande suite : ");
+        if (score == GRANDE_SUITE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
 
-    }
-
-    static boolean estUneGrandeSuite() {
-
-    }
-
-    static boolean estUnYathzee() {
-
+        System.out.print("8) Yahtzee : ");
+        if (score == YATHZEE) {
+            System.out.println(score);
+        } else {
+            System.out.println("0");
+        }
     }
 
     public static void main(String[] args) {
         tirerDes();
         affichageDes();
+
         for (int i = 0; i < 2; i++) {
             int[] positions = demanderDesARelancer();
             if (positions.length == 0) {
@@ -205,8 +288,7 @@ public class YahtzeeProcedural {
                 reLance(positions);
             }
         }
-        detecterCombinaison();
-        calculerScore();
+        affichageScore();
         System.out.println("Votre score est : " + score);
     }
 }
