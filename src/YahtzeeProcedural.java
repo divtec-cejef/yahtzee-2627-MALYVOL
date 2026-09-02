@@ -1,3 +1,4 @@
+import java.lang.classfile.attribute.PermittedSubclassesAttribute;
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
@@ -6,7 +7,7 @@ public class YahtzeeProcedural {
     static final int MAX = 6;
 
     static final int PAIRE = 5;
-    static final int DEUX_PAIRE = 10;
+    static final int DEUX_PAIRES = 10;
     static final int FULL_HOUSE = 25;
     static final int PETITE_SUITE = 30;
     static final int GRANDE_SUITE = 40;
@@ -93,7 +94,7 @@ public class YahtzeeProcedural {
 
     static boolean estUnPaire() {
         for (int occurrence : occurrences) {
-            if (occurrence == 2) {
+            if (occurrence >= 2) {
                 return true;
             }
         }
@@ -104,10 +105,10 @@ public class YahtzeeProcedural {
     static boolean estUnDoublePaire() {
         int paire = 0;
         for (int occurrence : occurrences) {
-            if (occurrence == 2) {
+            if (occurrence >= 2) {
                 paire++;
             }
-            if (paire == 2) {
+            if (paire >= 2) {
                 return true;
             }
         }
@@ -199,19 +200,33 @@ public class YahtzeeProcedural {
         compterOccurrences();
         if (estUnFullHouse()) {
             score += FULL_HOUSE;
-        } else if (estUneGrandeSuite()) {
+        }
+
+        if (estUneGrandeSuite()) {
             score += GRANDE_SUITE;
-        } else if (estUnePetitSuite()) {
+        }
+
+        if (estUnePetitSuite()) {
             score += PETITE_SUITE;
-        } else if (estUnDoublePaire()) {
-            score += DEUX_PAIRE;
-        } else if (estUnPaire()) {
+        }
+
+        if (estUnDoublePaire()) {
+            score += DEUX_PAIRES;
+        }
+
+        if (estUnPaire()) {
             score += PAIRE;
-        } else if (estUnYathzee()) {
+        }
+
+        if (estUnYathzee()) {
             score += YATHZEE;
-        } else if (estUnCarre()) {
+        }
+
+        if (estUnCarre()) {
             score += valeurCarre * 4;
-        } else if (estUnBrelan()) {
+        }
+
+        if (estUnBrelan()) {
             score += valeurBrelan * 3;
         }
     }
@@ -219,60 +234,52 @@ public class YahtzeeProcedural {
     static void affichageScore() {
         calculerScore();
 
-        System.out.print("\n1) Une Paire : ") ;
-        if (score == PAIRE) {
-            System.out.println(score);
+        if (estUnPaire()) {
+            System.out.printf("\n%-20s %d%n", "1) Une Paire : ", PAIRE);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "1) Une Paire : ", 0);
         }
 
-        System.out.print("2) Deux Paire : ");
-        if (score == DEUX_PAIRE) {
-            System.out.println(score);
+        if (estUnDoublePaire()) {
+            System.out.printf("%-20s %d%n", "2) Deux Paires : ", DEUX_PAIRES);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "2) Deux Paires : ", 0);
         }
 
-        System.out.print("3) Brelan : ");
-        if (score == (valeurBrelan * 3)) {
-            System.out.println(score);
+        if (estUnBrelan()) {
+            System.out.printf("%-20s %d%n", "3) Brelan : ", valeurBrelan*3);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "3) Brelan : ", 0);
         }
 
-        System.out.print("4) Carré : ");
-        if (score == (valeurCarre * 4)) {
-            System.out.println(score);
+        if (estUnCarre()) {
+            System.out.printf("%-20s %d%n", "4) Carré : ", valeurCarre*4);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "4) Carré : ", 0);
         }
 
-        System.out.print("5) Full House : ");
-        if (score == FULL_HOUSE) {
-            System.out.println(score);
+        if (estUnFullHouse()) {
+            System.out.printf("%-20s %d%n", "5) Full House : ", FULL_HOUSE);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "5) Full House : ", 0);
         }
 
-        System.out.print("6) Petite suite : ");
-        if (score == PETITE_SUITE) {
-            System.out.println(score);
+        if (estUnePetitSuite()) {
+            System.out.printf("%-20s %d%n", "6) Petite Suite : ", PETITE_SUITE);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "6) Petite Suite : ", 0);
         }
 
-        System.out.print("7) Grande suite : ");
-        if (score == GRANDE_SUITE) {
-            System.out.println(score);
+        if (estUneGrandeSuite()) {
+            System.out.printf("%-20s %d%n", "7) Grande Suite : ", GRANDE_SUITE);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "7) Grande Suite : ", 0);
         }
 
-        System.out.print("8) Yahtzee : ");
-        if (score == YATHZEE) {
-            System.out.println(score);
+        if (estUnYathzee()) {
+            System.out.printf("%-20s %d%n", "8) Yahtzee : ", YATHZEE);
         } else {
-            System.out.println("0");
+            System.out.printf("%-20s %d%n", "8) Yahtzee : ", 0);
         }
     }
 
@@ -289,6 +296,6 @@ public class YahtzeeProcedural {
             }
         }
         affichageScore();
-        System.out.println("Votre score est : " + score);
+        System.out.printf("\n%-20s %d%n", "Votre score est : ", score);
     }
 }
