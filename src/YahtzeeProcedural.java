@@ -118,7 +118,7 @@ public class YahtzeeProcedural {
 
     static boolean estUnBrelan() {
         for (int i = 0; i < occurrences.length; i++) {
-            if (occurrences[i] == 3) {
+            if (occurrences[i] >= 3) {
                 valeurBrelan = i + 1;
                 return true;
             }
@@ -182,7 +182,25 @@ public class YahtzeeProcedural {
     }
 
     static boolean estUnFullHouse() {
-        return estUnPaire() && estUnBrelan();
+        boolean estFullHouse = false;
+        boolean brelan = false;
+        boolean paire = false;
+
+        for (int occurrence : occurrences) {
+            if (occurrence == 3) {
+                brelan = true;
+            }
+
+            if (occurrence == 2) {
+                paire = true;
+            }
+        }
+
+        if (brelan && paire) {
+            estFullHouse = true;
+        }
+
+        return estFullHouse;
     }
 
     static boolean estUnYathzee() {
