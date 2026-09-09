@@ -1,4 +1,5 @@
 import java.lang.classfile.attribute.PermittedSubclassesAttribute;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
@@ -15,7 +16,8 @@ public class YahtzeeProcedural {
 
     static int[] des = new int[5];
     static int[] occurrences = new int[6];
-
+    static ArrayList<String> combinaisonsDisponibles = new ArrayList<>();
+    static ArrayList<String> combinaisonsUtilisees = new ArrayList<>();
     static int score = 0;
     static int valeurBrelan = 0;
     static int valeurCarre = 0;
@@ -24,6 +26,16 @@ public class YahtzeeProcedural {
         return (int) (Math.floor(Math.random() * (MAX - MIN + 1)) + MIN);
     }
 
+    static void initialiserCombinaisons() {
+        combinaisonsDisponibles.add("Paire");
+        combinaisonsDisponibles.add("Deux Paires");
+        combinaisonsDisponibles.add("Brelan");
+        combinaisonsDisponibles.add("Carré");
+        combinaisonsDisponibles.add("Full House");
+        combinaisonsDisponibles.add("Petite Suite");
+        combinaisonsDisponibles.add("Grande Suite");
+        combinaisonsDisponibles.add("Yahtzee");
+    }
 
     static void tirerDes() {
 
@@ -214,96 +226,140 @@ public class YahtzeeProcedural {
             return estYahtzee;
         }
 
-    static void calculerScore() {
-        compterOccurrences();
-        if (estUnFullHouse()) {
-            score += FULL_HOUSE;
-        }
+    static void calculerScore(String combinaisonChoisie) {
 
-        if (estUneGrandeSuite()) {
-            score += GRANDE_SUITE;
-        }
-
-        if (estUnePetitSuite()) {
-            score += PETITE_SUITE;
-        }
-
-        if (estUnDoublePaire()) {
-            score += DEUX_PAIRES;
-        }
-
-        if (estUnPaire()) {
+        if (combinaisonChoisie.equals("Paire") && estUnPaire()) {
             score += PAIRE;
-        }
 
-        if (estUnYathzee()) {
-            score += YATHZEE;
-        }
+        } else if (combinaisonChoisie.equals("Deux Paires") && estUnDoublePaire()) {
+            score += DEUX_PAIRES;
 
-        if (estUnCarre()) {
-            score += valeurCarre * 4;
-        }
-
-        if (estUnBrelan()) {
+        } else if (combinaisonChoisie.equals("Brelan") && estUnBrelan()) {
             score += valeurBrelan * 3;
+
+        } else if (combinaisonChoisie.equals("Carré") && estUnCarre()) {
+            score += valeurCarre * 4;
+
+        } else if (combinaisonChoisie.equals("Full House") && estUnFullHouse()) {
+            score += FULL_HOUSE;
+
+        } else if (combinaisonChoisie.equals("Petite Suite") && estUnePetitSuite()) {
+            score += PETITE_SUITE;
+
+        } else if (combinaisonChoisie.equals("Grande Suite") && estUneGrandeSuite()) {
+            score += GRANDE_SUITE;
+
+        } else if (combinaisonChoisie.equals("Yahtzee") && estUnYathzee()) {
+            score += YATHZEE;
         }
     }
 
     static void affichageScore() {
-        calculerScore();
-
-        if (estUnPaire()) {
+        compterOccurrences();
+        if (combinaisonsUtilisees.contains("Paire")) {
+            System.out.println("-");
+        } else if (estUnPaire() && !combinaisonsUtilisees.contains("Paire")) {
             System.out.printf("\n%-20s %d%n", "1) Une Paire : ", PAIRE);
+            combinaisonsDisponibles.add("Paire");
         } else {
             System.out.printf("%-20s %d%n", "1) Une Paire : ", 0);
+            combinaisonsDisponibles.add("Paire");
         }
 
-        if (estUnDoublePaire()) {
+        if (combinaisonsUtilisees.contains("Deux Paires")) {
+            System.out.println("-");
+        } else if (estUnDoublePaire() && !combinaisonsUtilisees.contains("Deux Paires")) {
             System.out.printf("%-20s %d%n", "2) Deux Paires : ", DEUX_PAIRES);
+            combinaisonsDisponibles.add("Deux Paires");
         } else {
             System.out.printf("%-20s %d%n", "2) Deux Paires : ", 0);
         }
 
-        if (estUnBrelan()) {
+        if (combinaisonsUtilisees.contains("Brelan")) {
+            System.out.println("-");
+        } else if (estUnBrelan() && !combinaisonsUtilisees.contains("Brelan")) {
             System.out.printf("%-20s %d%n", "3) Brelan : ", valeurBrelan*3);
+            combinaisonsDisponibles.add("Brelan");
         } else {
             System.out.printf("%-20s %d%n", "3) Brelan : ", 0);
         }
 
-        if (estUnCarre()) {
+        if (combinaisonsUtilisees.contains("Carré")) {
+            System.out.println("-");
+        } else if (estUnCarre() && !combinaisonsUtilisees.contains("Carré")) {
             System.out.printf("%-20s %d%n", "4) Carré : ", valeurCarre*4);
+            combinaisonsDisponibles.add("Carré");
         } else {
             System.out.printf("%-20s %d%n", "4) Carré : ", 0);
         }
 
-        if (estUnFullHouse()) {
+        if (combinaisonsUtilisees.contains("Full House")) {
+            System.out.println("-");
+        } else if (estUnFullHouse() && !combinaisonsUtilisees.contains("Full House")) {
             System.out.printf("%-20s %d%n", "5) Full House : ", FULL_HOUSE);
+            combinaisonsDisponibles.add("Full House");
         } else {
             System.out.printf("%-20s %d%n", "5) Full House : ", 0);
         }
 
-        if (estUnePetitSuite()) {
+
+        if (combinaisonsUtilisees.contains("Petite Suite")) {
+            System.out.println("-");
+        } else if (estUnePetitSuite() && !combinaisonsUtilisees.contains("Petite Suite")) {
             System.out.printf("%-20s %d%n", "6) Petite Suite : ", PETITE_SUITE);
+            combinaisonsDisponibles.add("Petite Suite");
         } else {
             System.out.printf("%-20s %d%n", "6) Petite Suite : ", 0);
         }
 
-        if (estUneGrandeSuite()) {
+
+        if (combinaisonsUtilisees.contains("Grande Suite")) {
+            System.out.println("-");
+        } else if (estUneGrandeSuite() && !combinaisonsUtilisees.contains("Grande Suite")) {
             System.out.printf("%-20s %d%n", "7) Grande Suite : ", GRANDE_SUITE);
+            combinaisonsDisponibles.add("Grande Suite");
         } else {
             System.out.printf("%-20s %d%n", "7) Grande Suite : ", 0);
         }
 
-        if (estUnYathzee()) {
+
+        if (combinaisonsUtilisees.contains("Yahtzee")) {
+            System.out.println("-");
+        } else if (estUnYathzee() && !combinaisonsUtilisees.contains("Yahtzee")) {
             System.out.printf("%-20s %d%n", "8) Yahtzee : ", YATHZEE);
+            combinaisonsDisponibles.add("Yahtzee");
         } else {
             System.out.printf("%-20s %d%n", "8) Yahtzee : ", 0);
         }
     }
 
+
+    static int demanderGarderCombinaisons() {
+        boolean valide = true;
+        int garder = 0;
+        Scanner scanner = new Scanner(System.in);
+        do {
+            valide = true;
+            System.out.println("\nQuelle combinaison voulez-vous garder ?");
+            String choix = scanner.nextLine();
+
+            garder = Integer.parseInt(choix);
+            ;
+            if (garder <= 0 || garder > 8) {
+                System.out.println("Error, saisie " + garder + " est invalide.");
+                valide = false;
+            }
+
+        } while (!valide);
+
+        return garder-1;
+    }
+
+
     public static void main(String[] args) {
         tirerDes();
         affichageDes();
+        initialiserCombinaisons();
 
         for (int i = 0; i < 2; i++) {
             int[] positions = demanderDesARelancer();
@@ -314,6 +370,17 @@ public class YahtzeeProcedural {
             }
         }
         affichageScore();
-        System.out.printf("\n%-20s %d%n", "Votre score est : ", score);
+        int choix = demanderGarderCombinaisons();
+
+        String combinaisonChoisie = combinaisonsDisponibles.get(choix);
+
+        System.out.println("\nVous avez choisi : " + combinaisonChoisie);
+
+        calculerScore(combinaisonChoisie);
+        combinaisonsUtilisees.add(combinaisonChoisie);
+        combinaisonsDisponibles.remove(choix);
+        System.out.println("\nVotre score est : " + score);
+
+        affichageScore();
     }
 }
