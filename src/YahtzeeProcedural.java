@@ -1,11 +1,13 @@
 import java.lang.classfile.attribute.PermittedSubclassesAttribute;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
 
     static final int MIN = 1;
     static final int MAX = 6;
+    static final int MANCHES = 5;
 
     static final int PAIRE = 5;
     static final int DEUX_PAIRES = 10;
@@ -47,7 +49,7 @@ public class YahtzeeProcedural {
 
 
     static void affichageDes() {
-
+        System.out.println("\n");
         for (int i = 0; i < des.length; i++) {
             System.out.println("De " + (i + 1) + " vaut " + des[i]);
         }
@@ -168,7 +170,7 @@ public class YahtzeeProcedural {
             }
         }
 
-        return maxSuite == 4;
+        return maxSuite >= 4;
     }
 
 
@@ -256,6 +258,7 @@ public class YahtzeeProcedural {
 
     static void affichageScore() {
         compterOccurrences();
+        System.out.println("\n");
         if (combinaisonsUtilisees.contains("Paire")) {
             System.out.println("-");
         } else if (estUnPaire() && !combinaisonsUtilisees.contains("Paire")) {
@@ -357,30 +360,49 @@ public class YahtzeeProcedural {
 
 
     public static void main(String[] args) {
-        tirerDes();
-        affichageDes();
-        initialiserCombinaisons();
+        for (int i = 0; i < MANCHES; i++) {
+            tirerDes();
+            affichageDes();
+            initialiserCombinaisons();
 
-        for (int i = 0; i < 2; i++) {
-            int[] positions = demanderDesARelancer();
-            if (positions.length == 0) {
-                break;
-            } else {
-                reLance(positions);
+            for (int j = 0; j < 2; j++) {
+                int[] positions = demanderDesARelancer();
+                if (positions.length == 0) {
+                    break;
+                } else {
+                    reLance(positions);
+                }
+            }
+            affichageScore();
+
+            boolean valide = false;
+            String bomboclat = "";
+            int choixBomboclat = 0;
+            do {
+                int choix = demanderGarderCombinaisons();
+
+                String combinaisonChoisie = combinaisonsDisponibles.get(choix);
+
+                if (Objects.equals(combinaisonChoisie, "-")) {
+                    System.out.println("\nErreur, cette combinaison a été déjà choisi");
+                } else {
+                    bomboclat = combinaisonChoisie;
+                    choixBomboclat = choix;
+                    System.out.println("\nVous avez choisi : " + combinaisonChoisie);
+                    valide = true;
+
+                }
+            } while (!valide);
+
+            calculerScore(bomboclat);
+            combinaisonsUtilisees.add(bomboclat);
+            combinaisonsDisponibles.add(choixBomboclat+1, "-");
+            combinaisonsDisponibles.remove(choixBomboclat);
+
+            if (i != 4) {
+            System.out.println("\nVotre score est : " + score);
             }
         }
-        affichageScore();
-        int choix = demanderGarderCombinaisons();
-
-        String combinaisonChoisie = combinaisonsDisponibles.get(choix);
-
-        System.out.println("\nVous avez choisi : " + combinaisonChoisie);
-
-        calculerScore(combinaisonChoisie);
-        combinaisonsUtilisees.add(combinaisonChoisie);
-        combinaisonsDisponibles.remove(choix);
-        System.out.println("\nVotre score est : " + score);
-
-        affichageScore();
+        System.out.println("\nVotre score final est : " + score);
     }
 }
