@@ -2,7 +2,7 @@ package Objects;
 
 public class DiceHand {
 
-    private Die[] dice = new Die[5];
+    private final Die[] dice = new Die[5];
 
     private int valueThree = 0;
     private int valueFour = 0;
