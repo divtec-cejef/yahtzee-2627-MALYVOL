@@ -23,4 +23,5 @@ public class ScoreEntry {
     public int[] getDiceValues() {
         return diceValues.clone();
     }
+
 }

@@ -33,6 +33,7 @@ public class Scorecard {
                 total += entry.getScore();
             }
         return total;
+
         }
     }
 

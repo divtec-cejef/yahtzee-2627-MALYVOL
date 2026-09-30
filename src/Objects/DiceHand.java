@@ -190,4 +190,5 @@ public class DiceHand {
     public int getValueFour() {
         return valueFour;
     }
+
 }
