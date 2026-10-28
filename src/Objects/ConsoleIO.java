@@ -15,18 +15,34 @@ public class ConsoleIO {
     }
 
     public int[] readDicePositions() {
-        String input = readLine().trim();
+        int[] positions;
+        boolean valide;
 
-        if (input.isEmpty() || input.equals("0")) {
-            return new int[0];
-        }
+        do {
+            valide = true;
+            String input = readLine().trim();
 
-        String[] parts = input.split("\\s+");
-        int[] positions = new int[parts.length];
-
-        for (int j = 0; j < parts.length; j++) {
-            positions[j] = Integer.parseInt(parts[j]) - 1;
+            if (input.isEmpty() || input.equals("0")) {
+                return new int[0];
             }
+
+            String[] parts = input.split("\\s+");
+            positions = new int[parts.length];
+
+            for (int j = 0; j < parts.length; j++) {
+                try {
+                    positions[j] = Integer.parseInt(parts[j]) - 1;
+
+                    if (positions[j] < 0 || positions[4] > 4) {
+                        System.out.println("Error, entry " + parts[j] + " is invalid.");
+                        valide = false;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Error, entry " + parts[j] + " is invalid.");
+                    valide = false;
+                }
+            }
+        } while (!valide);
         return positions;
     }
 
