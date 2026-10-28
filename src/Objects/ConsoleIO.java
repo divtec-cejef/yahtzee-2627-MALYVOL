@@ -55,8 +55,10 @@ public class ConsoleIO {
     }
 
     public void showScores(ArrayList<Category> categories, DiceHand hand) {
+        int compteur=0;
         for (Category category : categories) {
-            System.out.println(category.getNom() + " : " + category.getScore(hand));
+            compteur++;
+            System.out.println(compteur + ") " + category.getNom() + " : " + category.getScore(hand));
         }
     }
 

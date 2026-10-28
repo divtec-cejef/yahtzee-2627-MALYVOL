@@ -2,8 +2,8 @@ package Objects;
 
 public class Player {
 
-    private String name;
-    private Scorecard scorecard;
+    private final String name;
+    private final Scorecard scorecard;
 
     public Player (String name) {
         this.name = name;
