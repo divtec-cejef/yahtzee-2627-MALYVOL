@@ -1,5 +1,6 @@
 package Objects;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 public class Game {
@@ -22,6 +23,10 @@ public class Game {
 
             Scorecard scorecard = player.getScorecard();
             console.showScores(scorecard.getAvailableCategories(), hand);
+
+            Category chosen = choseCategory(scorecard.getAvailableCategories(), hand);
+            scorecard.add(chosen, hand);
+            console.showScorecard(scorecard);
         }
 
     }
@@ -32,7 +37,7 @@ public class Game {
 
         do {
             valid=true;
-            console.showMessage("Chose a category ('Enter' for the best score):");
+            console.showMessage("\nChose a category ('Enter' for the best score):");
             String input = console.readLine().trim();
 
             if (input.isEmpty()) {
@@ -46,12 +51,13 @@ public class Game {
                 selectedCategory = bestCategory;
             } else {
                 try {
-                    int chosenCategory = Integer.parseInt(input) + 1;
-                    selectedCategory = categories.get(chosenCategory - 1);
+                    int chosenCategory = Integer.parseInt(input);
 
-                    if (chosenCategory < 1 || chosenCategory > 8) {
-                        System.out.println("Error, chosen category is invalid.");
+                    if (chosenCategory < 1 || chosenCategory > categories.size()) {
+                        console.showMessage("Error, chosen category is invalid.");
                         valid = false;
+                    } else {
+                        selectedCategory = categories.get(chosenCategory - 1 );
                     }
 
                 } catch (NumberFormatException e) {

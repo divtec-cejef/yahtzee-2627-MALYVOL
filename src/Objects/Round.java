@@ -13,10 +13,10 @@ public class Round {
     }
 
     public DiceHand play() {
-        console.showMessage("Round: " + number);
+        console.showMessage("\nRound: " + number + "\n");
         hand.rollAll();
         console.showDice(hand);
-        console.showMessage("Which dice do you want to reroll? (1-5, 0 to stop)");
+        console.showMessage("\nWhich dice do you want to reroll? (1-5, 0 to stop)");
         for (int i = 0; i < 2; i++) {
             int[] positions = console.readDicePositions();
             if (positions.length == 0) {

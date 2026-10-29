@@ -33,7 +33,7 @@ public class ConsoleIO {
                 try {
                     positions[j] = Integer.parseInt(parts[j]) - 1;
 
-                    if (positions[j] < 0 || positions[4] > 4) {
+                    if (positions[j] < 0 || positions[j] > 4) {
                         System.out.println("Error, entry " + parts[j] + " is invalid.");
                         valide = false;
                     }
@@ -48,7 +48,6 @@ public class ConsoleIO {
 
     public void showDice(DiceHand hand) {
         int[] dice = hand.getValues();
-
         for (int i = 0; i < dice.length; i++) {
             System.out.println("Die " + (1 + i) + " : " + dice[i]);
         }
@@ -56,6 +55,7 @@ public class ConsoleIO {
 
     public void showScores(ArrayList<Category> categories, DiceHand hand) {
         int compteur=0;
+        System.out.println("\n");
         for (Category category : categories) {
             compteur++;
             System.out.println(compteur + ") " + category.getNom() + " : " + category.getScore(hand));
@@ -63,9 +63,10 @@ public class ConsoleIO {
     }
 
     public void showScorecard(Scorecard scorecard) {
+        showMessage("\n");
         for (ScoreEntry entry : scorecard.getEntries()) {
             System.out.println(entry.getCategory().getNom() + " : " + entry.getScore());
         }
-        System.out.println("Total : " + scorecard.getTotal());
+        System.out.println("\nTotal : " + scorecard.getTotal());
     }
 }
